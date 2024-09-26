@@ -1,4 +1,6 @@
-Not just an Universal MediaCreationTool wrapper script with ingenious support for business editions,  
+Not just an Universal MediaCreationTool wrapper script with ingenious support for business editions, 
+
+![image](https://github.com/user-attachments/assets/5cb9bcd5-a2bb-4354-a4a2-db0840ae72de)
 <img src="preview.png">  
 A powerful yet simple windows 10 / 11 deployment automation tool as well!  
 *If you had no success launching the script so far, this latest version will work*  
