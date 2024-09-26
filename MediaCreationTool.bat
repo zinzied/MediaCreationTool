@@ -290,12 +290,12 @@ if "%~nx0" neq "%nx0%" copy /y "%WORK%\%~nx0" "%WORK%\%nx0%" >nul & del /f /q "%
 if not defined set start "MCT" cmd /d /x /c set "ROOT=%ROOT%" ^& call "%WORK%\%nx0%" %* set& exit /b
 ::# self-echo top 1-20 lines of script
 prompt $G & (<"%~f0" (set /p _=&for /l %%s in (1,1,20) do set _=& set /p _=& call echo;%%_%%)) 
-::# lean xp+ color macros by AveYo:  %<%:af " hello "%>>%  &  %<%:cf " w\"or\"ld "%>%   for single \ / " use .%|%\  .%|%/  \"%|%\"
+::# lean xp+ color macros by Zied:  %<%:af " hello "%>>%  &  %<%:cf " w\"or\"ld "%>%   for single \ / " use .%|%\  .%|%/  \"%|%\"
 for /f "delims=:" %%s in ('echo;prompt $h$s$h:^|cmd /d') do set "|=%%s"&set ">>=\..\c nul&set /p s=%%s%%s%%s%%s%%s%%s%%s<nul&popd"
 set "<=pushd "%appdata%"&2>nul findstr /c:\ /a" &set ">=%>>%&echo;" &set "|=%|:~0,1%" &set /p s=\<nul>"%appdata%\c"
 ::# (un)define main variables
 for %%s in (OPTIONS MCT XML CAB EXE VID PRE AUTO ISO EDITION KEY ARCH LANGCODE NO_UPDATE DEF AKEY) do set "%%s="
-for %%s in (latest_MCT.url) do if not exist %%s (echo;[InternetShortcut]&echo;URL=github.com/AveYo/MediaCreationTool.bat)>%%s
+for %%s in (latest_MCT.url) do if not exist %%s (echo;[InternetShortcut]&echo;URL=github.com/zinzied/MediaCreationTool.bat)>%%s
 goto Universal MCT
 
 ::--------------------------------------------------------------------------------------------------------------------------------
@@ -473,7 +473,7 @@ EXIT
  if ($null -ne $app) {[Microsoft.VisualBasic.Interaction]::AppActivate($app.Id)}; [Windows.Forms.SendKeys]::SendWait("{ENTER}") }
  $id = 0; if ('Auto USB' -ne $env:PRESET) {$id = 1}
  $sw = "ShowWindowAsync"; $dm = [AppDomain]::CurrentDomain."DefineDynami`cAssembly"(1,1)."DefineDynami`cModule"(1)
- $dt = $dm."Defin`eType"("AveYo",1179913,[ValueType]); $ptr = (get-process -pid $PID).MainWindowHandle.gettype()
+ $dt = $dm."Defin`eType"("Zied",1179913,[ValueType]); $ptr = (get-process -pid $PID).MainWindowHandle.gettype()
  $dt."DefinePInvok`eMethod"($sw,"user`32",8214,1,[void],@($ptr,[int]),1,4) >$null; $nt = $dt."Creat`eType"()
  new-item -path function: -name "ShowWindow" -value {$nt."G`etMethod"($sw).invoke(0,@($args[0],$args[1]))} >$null
 
@@ -632,7 +632,7 @@ EXIT
    }
    try { takeown.exe /f $winsetup /a >$null; icacls.exe $winsetup /grant *S-1-5-32-544:f; attrib -R -S $winsetup
      $patch = '/commit'; [io.file]::OpenWrite($winsetup).close() } catch {$patch = '/discard'}
-   if ($patch -eq '/commit') { #:: an original setup override by AveYo to use when registry overrides fail (VirtualBox 5.x)
+   if ($patch -eq '/commit') { #:: an original setup override by Zied to use when registry overrides fail (VirtualBox 5.x)
      $b = [io.file]::ReadAllBytes($winsetup); $h = [BitConverter]::ToString($b) -replace '-'
      $s = [BitConverter]::ToString([Text.Encoding]::Unicode.GetBytes('Module_Init_HWRequirements')) -replace '-'
      $i = ($h.IndexOf($s)/2); $r = [Text.Encoding]::Unicode.GetBytes('Module_Init_GatherDiskInfo'); $l = $r.Length
@@ -809,7 +809,7 @@ function WIM_INFO ($file = 'install.esd', $index = 0, $out = 0) { :info while ($
   $txt+= $i.INDEX+','+$i.WINDOWS.VERSION.BUILD+','+$i.WINDOWS.VERSION.SPBUILD+','+$(@{10='x86';15='arm';19='x64';112='arm64'}[$a])
   $txt+= ','+$i.WINDOWS.LANGUAGES.LANGUAGE+','+$i.WINDOWS.EDITIONID+','+$i.NAME+[char]13+[char]10}; $txt=$txt-replace',(?=,)',', '
   if ($out -eq 2) {try{[io.file]::WriteAllText(($file-replace'esd$','txt'),$txt)}catch{}; return}; if ($out -eq 0) {return $txt}
-} #:WIM_INFO:# Quick WIM SWM ESD ISO info v2 - lean and mean snippet by AveYo, 2021
+} #:WIM_INFO:# Quick WIM SWM ESD ISO info v2 - lean and mean snippet by Zied, 2024
 
 '@; [io.file]::WriteAllText('auto.cmd', $text) #:generate_auto_cmd
 
@@ -827,7 +827,7 @@ function WIM_INFO ($file = 'install.esd', $index = 0, $out = 0) { :info while ($
    xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    publicKeyToken="31bf3856ad364e35" versionScope="nonSxS">
     <RunSynchronous>
-      <!-- offline local account via OOBE\BYPASSNRO on every site but literally no one credits AveYo for sharing it -->
+      <!-- offline local account via OOBE\BYPASSNRO on every site but literally no one credits Zinzied for sharing it -->
       <RunSynchronousCommand wcm:action="add"><Order>1</Order>
         <Path>reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\OOBE /v BypassNRO /t reg_dword /d 1 /f</Path>
       </RunSynchronousCommand>
@@ -870,7 +870,7 @@ set ^ #=;$f0=[io.file]::ReadAllText($env:0); $0=($f0-split '#\:MakeISO\:' ,3)[1]
 set ^ #=& set "0=%~f0"& set 1=;MakeISO %*& powershell -nop -c "%#%"& exit /b %errorcode%
 function MakeISO ($dir,$iso,$label='DVD_ROM') {if (!(test-path -Path $dir -pathtype Container)) {"[ERR] $dir"; return 1}; $code=@"
  using System; using System.IO; using System.Runtime.Interop`Services; using System.Runtime.Interop`Services.ComTypes;
- public class dir2iso {public int AveYo=2021; [Dll`Import("shlwapi",CharSet=CharSet.Unicode,PreserveSig=false)]
+ public class dir2iso {public int Zied=2024; [Dll`Import("shlwapi",CharSet=CharSet.Unicode,PreserveSig=false)]
  internal static extern void SHCreateStreamOnFileEx(string f,uint m,uint d,bool b,IStream r,out IStream s);
  public static int Create(string file, ref object obj, int bs, int tb) { IStream dir=(IStream)obj, iso;
  try {SHCreateStreamOnFileEx(file,0x1001,0x80,true,null,out iso);} catch(Exception e) {Console.WriteLine(e.Message); return 1;}
@@ -889,7 +889,7 @@ function MakeISO ($dir,$iso,$label='DVD_ROM') {if (!(test-path -Path $dir -patht
  if ($bootable) {$fsi.BootImageOptionsArray = $BOOT}; $TREE = $fsi.Root; $TREE.AddTree($dir,$false); $fsi.VolumeName = $label
  $obj = $fsi.CreateResultImage(); $ret = [dir2iso]::Create($iso,[ref]$obj.ImageStream,$obj.BlockSize,$obj.TotalBlocks) }
  [GC]::Collect(); return $ret
-} #:MakeISO:#  export directory as (bootable) udf iso - lean and mean snippet by AveYo, 2022.03.15
+} #:MakeISO:#  export directory as (bootable) udf iso - lean and mean snippet by Zinzied, 2024.09.26
 
 ::--------------------------------------------------------------------------------------------------------------------------------
 #:DOWNLOAD:# [PARAMS] "url" "file" [optional]"path"
@@ -905,7 +905,7 @@ function DOWNLOAD ($u, $f, $p = (get-location).Path) {
     if (([IO.FileInfo]$file).Exists) {return}; try {$wc.DownloadFile($url, $file)} catch {}
   }
   if (([IO.FileInfo]$file).Exists) {return}; write-host -fore Yellow " $f download failed "
-} #:DOWNLOAD:# try download url via bits, net, and http/https - snippet by AveYo, 2021
+} #:DOWNLOAD:# try download url via bits, net, and http/https - snippet by Zied, 2021
 
 ::--------------------------------------------------------------------------------------------------------------------------------
 #:CHOICES:#  [PARAMS] indexvar "c,h,o,i,c,e,s"  [OPTIONAL]  default-index "title" fontsize backcolor forecolor winsize
@@ -920,7 +920,7 @@ function CHOICES ($index,$choices,$def=1,$title='Choices',[int]$sz=12,$bc='Midni
  $f.Text=$title; $f.BackColor=$bc; $f.ForeColor=$fc; $f.StartPosition=4; $f.AutoSize=1; $f.AutoSizeMode=0; $f.MaximizeBox=0
  $f.AcceptButton=$bt[$def-1]; $f.CancelButton=$bt[-1]; $f.Add_Shown({$f.Activate();$bt[$def-1].focus()})
  $f.ShowDialog() >$null; $index=$global:ret; if ($index -eq $ch.length) {return 0} else {return $index}
-} #:CHOICES:#  gui dialog with inverted focus returning selected index - lean and mean snippet by AveYo, 2018 - 2021
+} #:CHOICES:#  gui dialog with inverted focus returning selected index - lean and mean snippet by Zinzied, 2023 - 2024
 
 ::--------------------------------------------------------------------------------------------------------------------------------
 #:CHOICES2:#  [INTERNAL]
